@@ -1,21 +1,21 @@
 //Video gallery functionality and lightbox
 const videosByCategory = {
   full: [
-    { thumbnail: "/img/burko-full-set-thumbnail.png", src: "/video/Burko-FullSet.mp4" },
-    { thumbnail: "/img/marbs-full-set-thumbnail.png", src: "/video/MARBS-FullSet.mp4" },
-    { thumbnail: "/img/t_sugah-full-set-thumbnail.png", src: "/video/T&Sugah-FullSet.mp4" }
+    { thumbnail: "./img/burko-full-set-thumbnail.png", src: "/video/Burko-FullSet.mp4" },
+    { thumbnail: "./img/marbs-full-set-thumbnail.png", src: "/video/MARBS-FullSet.mp4" },
+    { thumbnail: "./img/t_sugah-full-set-thumbnail.png", src: "/video/T&Sugah-FullSet.mp4" }
   ],
   highlights: [
-    { thumbnail: "/img/burko-highlight.jpg", src: "/video/Burko-Highlight.mp4" },
-    { thumbnail: "/img/marbs-highlight.jpg", src: "/video/MARBS-Highlight.mp4" },
-    { thumbnail: "/img/t&sugah-highlight.jpg", src: "/video/t&sugah-Highlight.mp4" },
-    { thumbnail: "/img/townshiprebellion-highlight.jpg", src: "/video/TownshipRebellion-Highlight.mp4" }
+    { thumbnail: "./img/burko-highlight.jpg", src: "/video/Burko-Highlight.mp4" },
+    { thumbnail: "./img/marbs-highlight.jpg", src: "/video/MARBS-Highlight.mp4" },
+    { thumbnail: "./img/t&sugah-highlight.jpg", src: "/video/t&sugah-Highlight.mp4" },
+    { thumbnail: "./img/townshiprebellion-highlight.jpg", src: "/video/TownshipRebellion-Highlight.mp4" }
   ],
   reels: [
-    { thumbnail: "/img/townshiprebellion-reel1.jpg", src: "/video/TownshipRebellion-Reel1.mp4" },
-    { thumbnail: "/img/townshiprebellion-reel2.jpg", src: "/video/TownshipRebellion-Reel2.mp4" },
-    { thumbnail: "/img/tsha-reel1.jpg", src: "/video/TSHA-Reel1.mp4" },
-    { thumbnail: "/img/tsha-reel2.jpg", src: "/video/TSHA-Reel2.mp4" }
+    { thumbnail: "./img/townshiprebellion-reel1.jpg", src: "/video/TownshipRebellion-Reel1.mp4" },
+    { thumbnail: "./img/townshiprebellion-reel2.jpg", src: "/video/TownshipRebellion-Reel2.mp4" },
+    { thumbnail: "./img/tsha-reel1.jpg", src: "/video/TSHA-Reel1.mp4" },
+    { thumbnail: "./img/tsha-reel2.jpg", src: "/video/TSHA-Reel2.mp4" }
   ]
 };
 
