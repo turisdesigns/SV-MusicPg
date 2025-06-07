@@ -1204,7 +1204,7 @@ background: #0B0B1F;
 /*Who we are section*/
 .who-we-are-section {
   padding: 10vh 10vw;
-  background: #000 url(/img/who-we-are-bg-2.jpg) center/cover no-repeat;
+  background: #000 url(../img/who-we-are-bg-2.jpg) center/cover no-repeat;
 }
 
 .who-we-are-grid {
@@ -1440,7 +1440,7 @@ background: #0B0B1F;
 /*Stats Section*/
 
 .stats-section {
-  background-image: url("/img/stats-bg.jpg");
+  background-image: url("../img/stats-bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1705,7 +1705,7 @@ background: #0B0B1F;
 .contact {
   text-align: center;
   padding: 25rem 20rem;
-  background-image: url("/img/contact-bg.jpg");
+  background-image: url("../img/contact-bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;}
