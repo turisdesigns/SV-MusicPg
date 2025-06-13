@@ -1417,12 +1417,6 @@ background: #0B0B1F;
   margin-bottom: 24px;
   transition: transform 0.3s ease;
 }
-
-@media (min-width: 768px) {
-  .services-icon {
-    width: 33%;
-  }
-  
 .service-card:hover .service-icon {
   transform: scale(1.1);
 }
@@ -1441,7 +1435,7 @@ background: #0B0B1F;
   font-size: 3rem;
   font-weight: bold;
   margin-bottom: 12px;
-  color: #ffffff;
+  color: green;
 }
 
 .last-card {
