@@ -1167,7 +1167,6 @@ background: #0B0B1F;
   font-weight: bold;
   color: #ffffff;
   letter-spacing: .5vw;
-  margin-top: 5vh;
 }
 
 @media (max-width: 768px) {
@@ -1431,11 +1430,6 @@ background: #0B0B1F;
   font-size: 2rem;
   line-height: 1.6;
 }
-.service-title-last {
-  font-size: 3rem;
-  font-weight: bold;
-  margin-bottom: 12px;
-  color: green;
 
 .last-card {
   background: linear-gradient(to right, #763281, #c95285,#f6711a);
@@ -1580,7 +1574,7 @@ background: #0B0B1F;
 .revenue-card h3 {
   color: white;
   font-size: 2.25rem;
-  font-weight: 500;
+  font-weight: bold;
   margin-bottom: 16px;
 }
 
@@ -1710,7 +1704,7 @@ background: #0B0B1F;
 /*Contact Us Section*/
 .contact {
   text-align: center;
-  padding: 20vh;
+  padding: 25rem 20rem;
   background-image: url("../img/contact-bg.jpg");
   background-size: cover;
   background-position: center;
