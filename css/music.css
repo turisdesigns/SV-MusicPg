@@ -1427,7 +1427,7 @@ background: #0B0B1F;
   color: white;
 }
 .service-desc {
-  color: white;
+  color: #A0AEC0;
   font-size: 2rem;
   line-height: 1.6;
 }
@@ -1436,7 +1436,6 @@ background: #0B0B1F;
   font-weight: bold;
   margin-bottom: 12px;
   color: green;
-}
 
 .last-card {
   background: linear-gradient(to right, #763281, #c95285,#f6711a);
