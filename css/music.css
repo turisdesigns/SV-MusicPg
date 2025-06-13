@@ -1171,7 +1171,9 @@ background: #0B0B1F;
 }
 
 @media (max-width: 768px) {
-
+ .music-hero {
+   height: 40vh;
+ }
   .music-hero-content h1 {
     font-size: 4rem;
     margin-bottom: 1rem;
