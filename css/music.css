@@ -1629,8 +1629,8 @@ background: #0B0B1F;
 
 
 
-/*Video Reels Section*/
-.categories-section {
+ /*Video Reels Section*/
+ .categories-section {
   padding: 60px 20px;
   text-align: center;
   margin: 10vh 0;
@@ -1774,6 +1774,7 @@ background: #0B0B1F;
   display: flex;
   transition: transform 0.5s ease;
   width: auto;
+  touch-action: pan-y;
 }
 
 .video-thumb {
@@ -1788,9 +1789,6 @@ background: #0B0B1F;
   width: 100%;
   border-radius: 10px;
   transition: transform 0.3s;
-  display: block;
-  background-color: #333;
-  min-height: 200px;
 }
 
 .video-thumb:hover img {
@@ -1825,45 +1823,10 @@ background: #0B0B1F;
       display: block;
   }
 
-  .carousel {
-      overflow: hidden;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      touch-action: pan-y;
-      justify-content: left; 
- }
-
-  .videos {
-      display: flex;
-      width: fit-content;
-      transform: translateX(0px);
-      transition: transform 0.3s ease;
-      touch-action: pan-y;
-  }
-
   .video-thumb {
       flex: 0 0 80vw;
       max-width: 80vw;
-      margin: 0 10px;
-      padding: 0;
-      touch-action: manipulation;
-  }
-
-  .video-thumb:first-child {
-      margin-left: 20px;
-  }
-
-  .video-thumb:last-child {
-      margin-right: 20px;
-  }
-
-  .video-thumb img {
-      width: 100%;
-      height: auto;
-      min-height: 180px;
-      border-radius: 10px;
-      pointer-events: none;
+      margin-right: 15px;
   }
 
   .categories-section h2 {
@@ -1872,6 +1835,18 @@ background: #0B0B1F;
 
   .arrow {
       display: none;
+  }
+
+  .carousel {
+      overflow: hidden;
+      width: 100%;
+      justify-content: left;
+  }
+
+  .videos {
+      display: flex;
+      width: auto;
+      overflow: visible;
   }
 }
 
