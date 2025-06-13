@@ -1419,8 +1419,8 @@ background: #0B0B1F;
 }
 
 @media (max-width: 768px) {
-  .services-icon {
-    width: 33%;
+  .service-icon {
+    width: 15vw;
   }
   
 .service-card:hover .service-icon {
