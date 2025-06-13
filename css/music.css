@@ -1418,7 +1418,7 @@ background: #0B0B1F;
   transition: transform 0.3s ease;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .services-icon {
     width: 33%;
   }
@@ -1438,8 +1438,8 @@ background: #0B0B1F;
   line-height: 1.6;
 }
 .service-title-last {
-  font-size: 3rem;
-  font-weight: bold;
+  font-size: 4rem;
+  font-weight: 900;
   margin-bottom: 12px;
   color: #ffffff;
 }
