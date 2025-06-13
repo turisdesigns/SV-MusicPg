@@ -1717,13 +1717,11 @@ background: #0B0B1F;
 /*Contact Us Section*/
 .contact {
   text-align: center;
-  padding: 15vh;
+  padding: 20vh;
   background-image: url("../img/contact-bg.jpg");
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-}
-  
+  background-repeat: no-repeat;}
 @media (max-width: 768px) {
   .contact {
     padding: 10rem 2rem;
