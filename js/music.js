@@ -1,22 +1,22 @@
-const videosByCategory = {
-            full: [
-                { thumbnail: "./img/burko-full-set-thumbnail.png", src: "/video/Burko-FullSet.mp4" },
-                { thumbnail: "./img/marbs-full-set-thumbnail.png", src: "/video/MARBS-FullSet.mp4" },
-                { thumbnail: "./img/t_sugah-full-set-thumbnail.png", src: "/video/T&Sugah-FullSet.mp4" }
-            ],
-            highlights: [
-                { thumbnail: "./img/burko-highlight.jpg", src: "/video/Burko-Highlight.mp4" },
-                { thumbnail: "./img/marbs-highlight.jpg", src: "/video/MARBS-Highlight.mp4" },
-                { thumbnail: "./img/t&sugah-highlight.jpg", src: "/video/t&sugah-Highlight.mp4" },
-                { thumbnail: "./img/townshiprebellion-highlight.jpg", src: "/video/TownshipRebellion-Highlight.mp4" }
-            ],
-            reels: [
-                { thumbnail: "./img/townshiprebellion-reel1.jpg", src: "/video/TownshipRebellion-Reel1.mp4" },
-                { thumbnail: "./img/townshiprebellion-reel2.jpg", src: "/video/TownshipRebellion-Reel2.mp4" },
-                { thumbnail: "./img/tsha-reel1.jpg", src: "/video/TSHA-Reel1.mp4" },
-                { thumbnail: "./img/tsha-reel2.jpg", src: "/video/TSHA-Reel2.mp4" }
-            ]
-        };
+ const videosByCategory = {
+  full: [
+      { thumbnail: "./img/burko-full-set-thumbnail.png", src: "https://stream.mux.com/B2sjPWvKK1WGAHAQTYMgyowVwo3kCLLy.m3u8" },
+      { thumbnail: "./img/marbs-full-set-thumbnail.png", src: "https://stream.mux.com/aELVKP66fm00yjwzaXiF9meg5fR3IxLkT.m3u8" },
+      { thumbnail: "./img/t_sugah-full-set-thumbnail.png", src: "https://stream.mux.com/400802Oi6RVOiJn5p401fsqqznckFq2kKhO.m3u8" }
+  ],
+  highlights: [
+      { thumbnail: "./img/burko-highlight.jpg", src: "https://stream.mux.com/02rWme0102801kqClGHywVzJXnS1KPf6G01DW.m3u8" },
+      { thumbnail: "./img/marbs-highlight.jpg", src: "https://stream.mux.com/WpJwbNp01GkyOnnms016QP8v3tSmGBxpNZ.m3u8" },
+      { thumbnail: "./img/t&sugah-highlight.jpg", src: "https://stream.mux.com/00sB3dSozF4ZaKgl02MMiHX9D5K1i0015vo.m3u8" },
+      { thumbnail: "./img/townshiprebellion-highlight.jpg", src: "https://stream.mux.com/SMKgbJFlevfsAe2iinvi501si8I15a9hi.m3u8" }
+  ],
+  reels: [
+      { thumbnail: "./img/townshiprebellion-reel1.jpg", src: "https://stream.mux.com/gCBrFfvbgY3028VaU3LlD9Ama3o89Zcuz.m3u8" },
+      { thumbnail: "./img/townshiprebellion-reel2.jpg", src: "https://stream.mux.com/YpnsqKblQO01rehm3nFatOrenT7DM01dwG.m3u8" },
+      { thumbnail: "./img/tsha-reel1.jpg", src: "https://stream.mux.com/1QuvIiozefBhp019HXc1YLHnF3pNSmq004.m3u8" },
+      { thumbnail: "./img/tsha-reel2.jpg", src: "https://stream.mux.com/TrTA500WyT8r01CGxpVWpm3fyrMRUhsP3F.m3u8" }
+  ]
+};
 
         let currentCategory = 'full';
         let currentSlide = 0;
