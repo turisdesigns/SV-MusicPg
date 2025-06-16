@@ -1124,7 +1124,7 @@ header nav.primary-nav a:focus:after {
 .music-page {
 background: #0B0B1F;
     color: white;
-    font-family: sans-serif;
+    font-family: "proxima-nova", sans-serif;
     min-height: 100vh;
 }
 
