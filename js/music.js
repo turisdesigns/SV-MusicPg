@@ -1,25 +1,26 @@
- const videosByCategory = {
-  full: [
-      { thumbnail: "./img/burko-full-set-thumbnail.png", src: "https://stream.mux.com/B2sjPWvKK1WGAHAQTYMgyowVwo3kCLLy.m3u8" },
-      { thumbnail: "./img/marbs-full-set-thumbnail.png", src: "https://stream.mux.com/aELVKP66fm00yjwzaXiF9meg5fR3IxLkT.m3u8" },
-      { thumbnail: "./img/t_sugah-full-set-thumbnail.png", src: "https://stream.mux.com/400802Oi6RVOiJn5p401fsqqznckFq2kKhO.m3u8" }
-  ],
-  highlights: [
-      { thumbnail: "./img/burko-highlight.jpg", src: "https://stream.mux.com/02rWme0102801kqClGHywVzJXnS1KPf6G01DW.m3u8" },
-      { thumbnail: "./img/marbs-highlight.jpg", src: "https://stream.mux.com/WpJwbNp01GkyOnnms016QP8v3tSmGBxpNZ.m3u8" },
-      { thumbnail: "./img/t&sugah-highlight.jpg", src: "https://stream.mux.com/00sB3dSozF4ZaKgl02MMiHX9D5K1i0015vo.m3u8" },
-      { thumbnail: "./img/townshiprebellion-highlight.jpg", src: "https://stream.mux.com/SMKgbJFlevfsAe2iinvi501si8I15a9hi.m3u8" }
-  ],
-  reels: [
-      { thumbnail: "./img/townshiprebellion-reel1.jpg", src: "https://stream.mux.com/gCBrFfvbgY3028VaU3LlD9Ama3o89Zcuz.m3u8" },
-      { thumbnail: "./img/townshiprebellion-reel2.jpg", src: "https://stream.mux.com/YpnsqKblQO01rehm3nFatOrenT7DM01dwG.m3u8" },
-      { thumbnail: "./img/tsha-reel1.jpg", src: "https://stream.mux.com/1QuvIiozefBhp019HXc1YLHnF3pNSmq004.m3u8" },
-      { thumbnail: "./img/tsha-reel2.jpg", src: "https://stream.mux.com/TrTA500WyT8r01CGxpVWpm3fyrMRUhsP3F.m3u8" }
-  ]
-};
+const videosByCategory = {
+            full: [
+                { thumbnail: "./img/burko-full-set-thumbnail.png", src: "https://stream.mux.com/B2sjPWvKK1WGAHAQTYMgyowVwo3kCLLy.m3u8" },
+                { thumbnail: "./img/marbs-full-set-thumbnail.png", src: "https://stream.mux.com/aELVKP66fm00yjwzaXiF9meg5fR3IxLkT.m3u8" },
+                { thumbnail: "./img/t_sugah-full-set-thumbnail.png", src: "https://stream.mux.com/400802Oi6RVOiJn5p401fsqqznckFq2kKhO.m3u8" }
+            ],
+            highlights: [
+                { thumbnail: "./img/burko-highlight.jpg", src: "https://stream.mux.com/02rWme0102801kqClGHywVzJXnS1KPf6G01DW.m3u8" },
+                { thumbnail: "./img/marbs-highlight.jpg", src: "https://stream.mux.com/WpJwbNp01GkyOnnms016QP8v3tSmGBxpNZ.m3u8" },
+                { thumbnail: "./img/t&sugah-highlight.jpg", src: "https://stream.mux.com/00sB3dSozF4ZaKgl02MMiHX9D5K1i0015vo.m3u8" },
+                { thumbnail: "./img/townshiprebellion-highlight.jpg", src: "https://stream.mux.com/SMKgbJFlevfsAe2iinvi501si8I15a9hi.m3u8" }
+            ],
+            reels: [
+                { thumbnail: "./img/townshiprebellion-reel1.jpg", src: "https://stream.mux.com/gCBrFfvbgY3028VaU3LlD9Ama3o89Zcuz.m3u8" },
+                { thumbnail: "./img/townshiprebellion-reel2.jpg", src: "https://stream.mux.com/YpnsqKblQO01rehm3nFatOrenT7DM01dwG.m3u8" },
+                { thumbnail: "./img/tsha-reel1.jpg", src: "https://stream.mux.com/1QuvIiozefBhp019HXc1YLHnF3pNSmq004.m3u8" },
+                { thumbnail: "./img/tsha-reel2.jpg", src: "https://stream.mux.com/TrTA500WyT8r01CGxpVWpm3fyrMRUhsP3F.m3u8" }
+            ]
+        };
 
         let currentCategory = 'full';
         let currentSlide = 0;
+        let hlsInstance = null;
 
         // Touch/Swipe variables
         let startX = 0;
@@ -54,9 +55,9 @@
             const videoCount = videosByCategory[currentCategory].length;
             const isMobile = window.innerWidth <= 768;
             
-            // On mobile, show dots for individual videos
-            // On desktop, show dots for groups of 3 videos
-            const dotCount = isMobile ? videoCount : Math.ceil(videoCount / 3);
+            // FIXED: On mobile, show dots for individual videos
+            // On desktop, show dots for individual videos too (not groups of 3)
+            const dotCount = videoCount;
             
             for (let i = 0; i < dotCount; i++) {
                 const dot = document.createElement("button");
@@ -77,26 +78,16 @@
                     // On mobile, highlight the dot corresponding to the current video
                     dot.classList.toggle("active", index === currentSlide);
                 } else {
-                    // On desktop, highlight the dot corresponding to the current group
-                    dot.classList.toggle("active", index === currentSlide);
+                    // FIXED: On desktop, also highlight individual video dots
+                    dot.classList.toggle("active", index === Math.floor(currentSlide));
                 }
             });
         }
 
         function goToSlide(slideIndex) {
             const videoCount = videosByCategory[currentCategory].length;
-            const isMobile = window.innerWidth <= 768;
-            
-            if (isMobile) {
-                // On mobile, go directly to the video
-                const maxSlide = videoCount - 1;
-                currentSlide = Math.max(0, Math.min(slideIndex, maxSlide));
-            } else {
-                // On desktop, go to the group of videos
-                const maxSlide = Math.ceil(videoCount / 3) - 1;
-                currentSlide = Math.max(0, Math.min(slideIndex, maxSlide));
-            }
-            
+            const maxSlide = videoCount - 1;
+            currentSlide = Math.max(0, Math.min(slideIndex, maxSlide));
             updateSlide();
         }
 
@@ -168,11 +159,11 @@
                 console.log('Mobile offset:', offsetPx + 'px');
                 document.getElementById("videoContainer").style.transform = `translateX(${offsetPx}px)`;
             } else {
-                // Desktop logic remains the same
-                const visibleCount = 3;
-                const maxSlide = Math.ceil(videoCount / visibleCount) - 1;
+                // FIXED: Desktop logic - move one video at a time, not by groups of 3
+                const videoWidth = 100 / 3; // Each video is 33.33% wide
+                const maxSlide = Math.max(0, videoCount - 3); // Show 3 videos, so max slide is total - 3
                 currentSlide = Math.max(0, Math.min(currentSlide, maxSlide));
-                const offsetPercent = -(100 * currentSlide);
+                const offsetPercent = -(videoWidth * currentSlide);
                 document.getElementById("videoContainer").style.transform = `translateX(${offsetPercent}%)`;
                 
                 // Show/hide arrows on desktop
@@ -188,11 +179,21 @@
 
         function nextSlide() {
             const videoCount = videosByCategory[currentCategory].length;
-            const visibleCount = window.innerWidth <= 768 ? 1 : 3;
-            const maxSlide = Math.ceil(videoCount / visibleCount) - 1;
-            if (currentSlide < maxSlide) {
-                currentSlide++;
-                updateSlide();
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                const maxSlide = videoCount - 1;
+                if (currentSlide < maxSlide) {
+                    currentSlide++;
+                    updateSlide();
+                }
+            } else {
+                // FIXED: Desktop - move one video at a time
+                const maxSlide = Math.max(0, videoCount - 3);
+                if (currentSlide < maxSlide) {
+                    currentSlide++;
+                    updateSlide();
+                }
             }
         }
 
@@ -305,19 +306,114 @@
             carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
         }
 
+        // FIXED: Enhanced openLightbox function with HLS support
         function openLightbox(src) {
             const lightbox = document.getElementById("lightbox");
             const video = document.getElementById("lightboxVideo");
-            video.src = src;
+            
+            // Clean up any existing HLS instance
+            if (hlsInstance) {
+                hlsInstance.destroy();
+                hlsInstance = null;
+            }
+            
+            // Check if HLS is supported
+            if (Hls.isSupported() && src.includes('.m3u8')) {
+                hlsInstance = new Hls({
+                    enableWorker: false,
+                    lowLatencyMode: true,
+                    backBufferLength: 90
+                });
+                
+                hlsInstance.loadSource(src);
+                hlsInstance.attachMedia(video);
+                
+                hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
+                    console.log('HLS manifest loaded, starting playback');
+                });
+                
+                hlsInstance.on(Hls.Events.ERROR, function(event, data) {
+                    console.error('HLS error:', data);
+                    if (data.fatal) {
+                        // Try to recover from fatal errors
+                        switch(data.type) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                console.log('Network error, trying to recover...');
+                                hlsInstance.startLoad();
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                console.log('Media error, trying to recover...');
+                                hlsInstance.recoverMediaError();
+                                break;
+                            default:
+                                console.log('Fatal error, destroying HLS instance');
+                                hlsInstance.destroy();
+                                hlsInstance = null;
+                                break;
+                        }
+                    }
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // Native HLS support (Safari)
+                video.src = src;
+            } else {
+                // Fallback for non-HLS videos
+                video.src = src;
+            }
+            
             lightbox.style.display = "flex";
         }
 
-        function closeLightbox() {
+        // FIXED: Enhanced closeLightbox function
+        function closeLightbox(event) {
+            // Don't close if clicking on video or controls
+            if (event && event.target.closest('.lightbox-content') && !event.target.classList.contains('close-btn')) {
+                return;
+            }
+            
             const lightbox = document.getElementById("lightbox");
             const video = document.getElementById("lightboxVideo");
+            
             video.pause();
+            
+            // Clean up HLS instance
+            if (hlsInstance) {
+                hlsInstance.destroy();
+                hlsInstance = null;
+            }
+            
             video.src = "";
             lightbox.style.display = "none";
+            
+            // Exit fullscreen if active
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+        }
+
+        // FIXED: Added fullscreen functionality
+        function toggleFullscreen() {
+            const video = document.getElementById("lightboxVideo");
+            
+            if (!document.fullscreenElement) {
+                // Enter fullscreen
+                if (video.requestFullscreen) {
+                    video.requestFullscreen();
+                } else if (video.webkitRequestFullscreen) {
+                    video.webkitRequestFullscreen();
+                } else if (video.msRequestFullscreen) {
+                    video.msRequestFullscreen();
+                }
+            } else {
+                // Exit fullscreen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
         }
 
         // Handle window resize to update dots
@@ -326,13 +422,19 @@
             updateSlide();
         }
 
+        // Handle escape key to close lightbox
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
         // Initialize on load and resize
         window.addEventListener("resize", handleResize);
         window.addEventListener("load", function() {
             renderVideos();
             addTouchListeners();
         });
-
 
 
 
