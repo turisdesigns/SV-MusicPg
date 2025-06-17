@@ -269,7 +269,7 @@
       </section>
   
 
-      <section class="categories-section" id="reels">
+       <section class="categories-section" id="reels">
         <h2>SEE IT IN ACTION</h2>
         <div class="underline-middle"></div>
         
@@ -279,7 +279,6 @@
             <button onclick="changeCategory('highlights')">Highlights</button>
             <button onclick="changeCategory('reels')">Social Media Reels</button>
         </div>
-
         <!-- Mobile Dropdown -->
         <div class="dropdown-container">
             <button class="dropdown-button" onclick="toggleDropdown()">
@@ -291,19 +290,23 @@
                 <button class="dropdown-option" onclick="selectCategory('reels', 'Social Media Reels')">Social Media Reels</button>
             </div>
         </div>
-
         <div class="carousel">
             <div class="arrow" onclick="prevSlide()">&#10094;</div>
             <div class="videos" id="videoContainer"></div>
             <div class="arrow" onclick="nextSlide()">&#10095;</div>
         </div>
-
         <!-- Pagination Dots -->
         <div class="pagination-dots" id="paginationDots"></div>
     </section>
-
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <video id="lightboxVideo" controls autoplay></video>
+    
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeLightbox()">&times;</button>
+            <video id="lightboxVideo" controls autoplay></video>
+            <div class="lightbox-controls">
+                <button class="lightbox-btn" onclick="toggleFullscreen()">Fullscreen</button>
+            </div>
+        </div>
     </div>
 
 
