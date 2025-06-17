@@ -156,10 +156,12 @@ function updateSlide() {
         console.log('Mobile offset:', offsetPx + 'px');
         document.getElementById("videoContainer").style.transform = `translateX(${offsetPx}px)`;
     } else {
-        // Desktop logic - now moves one video at a time
+        // Desktop logic - now moves one video at a time but stops when reaching the end
         const visibleCount = 3; // Still show 3 videos at once
         const videoWidth = 100 / visibleCount; // Each video takes 33.33% width
-        const maxSlide = videoCount - 1;
+        
+        // Calculate max slide position - stop when the last video is visible
+        const maxSlide = Math.max(0, videoCount - visibleCount);
         currentSlide = Math.max(0, Math.min(currentSlide, maxSlide));
         
         // Calculate offset to show the current video and next ones
@@ -179,7 +181,10 @@ function updateSlide() {
 
 function nextSlide() {
     const videoCount = videosByCategory[currentCategory].length;
-    const maxSlide = videoCount - 1; // Changed: now moves one video at a time for both mobile and desktop
+    const isMobile = window.innerWidth <= 768;
+    
+    // Calculate proper max slide based on device type
+    const maxSlide = isMobile ? videoCount - 1 : Math.max(0, videoCount - 3);
     
     if (currentSlide < maxSlide) {
         currentSlide++;
@@ -300,10 +305,25 @@ function openLightbox(src) {
     const lightbox = document.getElementById("lightbox");
     const video = document.getElementById("lightboxVideo");
     
-    // Enhanced video loading with better error handling
-    video.src = "";  // Clear previous source
+    // Check if browser supports HLS natively (mainly Safari)
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
-    // Add event listeners for better video handling
+    // Clear previous source
+    video.src = "";
+    
+    // Enhanced error handling
+    video.addEventListener('error', function(e) {
+        console.error('Video loading error:', e);
+        
+        if (!isSafari && !isMobile) {
+            // For desktop browsers other than Safari, suggest using Safari or provide alternative
+            alert('HLS videos require Safari on desktop or a mobile browser. Please try opening in Safari, or use a mobile device.');
+        } else {
+            alert('Error loading video. Please check your internet connection and try again.');
+        }
+    });
+    
     video.addEventListener('loadstart', function() {
         console.log('Video loading started');
     });
@@ -312,17 +332,33 @@ function openLightbox(src) {
         console.log('Video can start playing');
     });
     
-    video.addEventListener('error', function(e) {
-        console.error('Video loading error:', e);
-        alert('Error loading video. Please try again.');
-    });
+    // Check if we need HLS.js for non-Safari desktop browsers
+    if (!isSafari && !isMobile && typeof Hls !== 'undefined') {
+        // Use HLS.js if available
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(src);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                console.log('HLS manifest loaded');
+            });
+        } else {
+            console.error('HLS.js not supported in this browser');
+            alert('This browser does not support HLS video playback. Please use Safari on desktop or a mobile browser.');
+            return;
+        }
+    } else if (isSafari || isMobile) {
+        // Use native HLS support
+        video.src = src;
+        video.load();
+    } else {
+        // No HLS support available
+        console.error('No HLS support available');
+        alert('HLS video playback is not supported in this browser. Please use Safari on desktop or a mobile browser.');
+        return;
+    }
     
-    // Set the source and show lightbox
-    video.src = src;
-    video.load(); // Explicitly load the video
     lightbox.style.display = "flex";
-    
-    // Add fullscreen support
     addFullscreenSupport();
 }
 
@@ -426,7 +462,6 @@ window.addEventListener("load", function() {
     renderVideos();
     addTouchListeners();
 });
-
 
 
 
