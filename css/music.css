@@ -1606,7 +1606,7 @@ background: #0B0B1F;
 }
 
 .revenue-card {
-  padding: 32px;
+  /* padding: 32px; */
   width: 100%;
 }
 @media (max-width: 768px) {
