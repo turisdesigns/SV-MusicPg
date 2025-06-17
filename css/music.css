@@ -1606,7 +1606,7 @@ background: #0B0B1F;
 }
 
 .revenue-card {
-  padding: 32px;
+  padding: 0;
   width: 100%;
 }
 @media (max-width: 768px) {
@@ -1628,7 +1628,6 @@ background: #0B0B1F;
     margin-bottom: 1rem;
   }
 }
-
 
 /*Video Reels Section*/
         .categories-section {
@@ -1943,7 +1942,6 @@ background: #0B0B1F;
                 right: 20px;
             }
         }
-
 
 
 
