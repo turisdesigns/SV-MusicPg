@@ -320,7 +320,7 @@ function openLightbox(src) {
             // For desktop browsers other than Safari, suggest using Safari or provide alternative
             //alert('HLS videos require Safari on desktop or a mobile browser. Please try opening in Safari, or use a mobile device.');
         } else {
-            alert('Error loading video. Please check your internet connection and try again.');
+            //alert('Error loading video. Please check your internet connection and try again.');
         }
     });
     
