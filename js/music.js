@@ -1,337 +1,143 @@
- const videosByCategory = {
-  full: [
-      { thumbnail: "./img/burko-full-set-thumbnail.png", src: "https://stream.mux.com/B2sjPWvKK1WGAHAQTYMgyowVwo3kCLLy.m3u8" },
-      { thumbnail: "./img/marbs-full-set-thumbnail.png", src: "https://stream.mux.com/aELVKP66fm00yjwzaXiF9meg5fR3IxLkT.m3u8" },
-      { thumbnail: "./img/t_sugah-full-set-thumbnail.png", src: "https://stream.mux.com/400802Oi6RVOiJn5p401fsqqznckFq2kKhO.m3u8" }
-  ],
-  highlights: [
-      { thumbnail: "./img/burko-highlight.jpg", src: "https://stream.mux.com/02rWme0102801kqClGHywVzJXnS1KPf6G01DW.m3u8" },
-      { thumbnail: "./img/marbs-highlight.jpg", src: "https://stream.mux.com/WpJwbNp01GkyOnnms016QP8v3tSmGBxpNZ.m3u8" },
-      { thumbnail: "./img/t&sugah-highlight.jpg", src: "https://stream.mux.com/00sB3dSozF4ZaKgl02MMiHX9D5K1i0015vo.m3u8" },
-      { thumbnail: "./img/townshiprebellion-highlight.jpg", src: "https://stream.mux.com/SMKgbJFlevfsAe2iinvi501si8I15a9hi.m3u8" }
-  ],
-  reels: [
-      { thumbnail: "./img/townshiprebellion-reel1.jpg", src: "https://stream.mux.com/gCBrFfvbgY3028VaU3LlD9Ama3o89Zcuz.m3u8" },
-      { thumbnail: "./img/townshiprebellion-reel2.jpg", src: "https://stream.mux.com/YpnsqKblQO01rehm3nFatOrenT7DM01dwG.m3u8" },
-      { thumbnail: "./img/tsha-reel1.jpg", src: "https://stream.mux.com/1QuvIiozefBhp019HXc1YLHnF3pNSmq004.m3u8" },
-      { thumbnail: "./img/tsha-reel2.jpg", src: "https://stream.mux.com/TrTA500WyT8r01CGxpVWpm3fyrMRUhsP3F.m3u8" }
-  ]
-};
 
-        let currentCategory = 'full';
-        let currentSlide = 0;
+  const videosData = {
+    full: [
+      { src: "https://stream.mux.com/B2sjPWvKK1WGAHAQTYMgyowVwo3kCLLy.m3u8", thumb: "./img/burko-full-set-thumbnail.png" },
+      { src: "https://stream.mux.com/aELVKP66fm00yjwzaXiF9meg5fR3IxLkT.m3u8", thumb: "./img/marbs-full-set-thumbnail.png" },
+      { src: "https://stream.mux.com/400802Oi6RVOiJn5p401fsqqznckFq2kKhO.m3u8", thumb: "./img/t_sugah-full-set-thumbnail.png" },
+    ],
+    highlights: [
+      { src: "https://stream.mux.com/02rWme0102801kqClGHywVzJXnS1KPf6G01DW.m3u8", thumb: "./img/burko-highlight.jpg" },
+      { src: "https://stream.mux.com/WpJwbNp01GkyOnnms016QP8v3tSmGBxpNZ.m3u8", thumb: "./img/marbs-highlight.jpg" },
+      { src: "https://stream.mux.com/00sB3dSozF4ZaKgl02MMiHX9D5K1i0015vo.m3u8", thumb: "./img/t&sugah-highlight.jpg" }, 
+      { src: "https://stream.mux.com/SMKgbJFlevfsAe2iinvi501si8I15a9hi.m3u8", thumb: "./img/townshiprebellion-highlight.jpg" },
+    ],
+    reels: [
+      { src: "https://stream.mux.com/gCBrFfvbgY3028VaU3LlD9Ama3o89Zcuz.m3u8", thumb: "./img/townshiprebellion-reel1.jpg" },
+      { src: "https://stream.mux.com/YpnsqKblQO01rehm3nFatOrenT7DM01dwG.m3u8", thumb: "./img/townshiprebellion-reel2.jpg" },
+      { src: "https://stream.mux.com/1QuvIiozefBhp019HXc1YLHnF3pNSmq004.m3u8", thumb: "./img/tsha-reel1.jpg" },
+      { src: "https://stream.mux.com/TrTA500WyT8r01CGxpVWpm3fyrMRUhsP3F.m3u8", thumb: "./img/tsha-reel2.jpg" },
+    ]
+  };
 
-        // Touch/Swipe variables
-        let startX = 0;
-        let currentX = 0;
-        let isDragging = false;
-        let startTransform = 0;
+  let currentCategory = 'full';
+  let currentSlide = 0;
 
-        function renderVideos() {
-            const container = document.getElementById("videoContainer");
-            container.innerHTML = "";
-            
-            console.log('Rendering videos for category:', currentCategory);
-            console.log('Videos in category:', videosByCategory[currentCategory]);
-            
-            videosByCategory[currentCategory].forEach((video, index) => {
-                const div = document.createElement("div");
-                div.className = "video-thumb";
-                div.innerHTML = `<img src="${video.thumbnail}" alt="Video ${index + 1}" onclick="openLightbox('${video.src}')" onerror="this.style.backgroundColor='#333'; this.alt='Image not found'">`;
-                container.appendChild(div);
-                console.log('Added video:', index + 1, video.thumbnail);
-            });
-            
-            console.log('Total videos rendered:', container.children.length);
-            renderPaginationDots();
-            updateSlide();
-        }
+  function changeCategory(category) {
+    currentCategory = category;
+    currentSlide = 0;
+    updateCategoryButtons(category);
+    renderVideos();
+    updatePaginationDots();
+  }
 
-        function renderPaginationDots() {
-            const dotsContainer = document.getElementById("paginationDots");
-            dotsContainer.innerHTML = "";
-            
-            const videoCount = videosByCategory[currentCategory].length;
-            const isMobile = window.innerWidth <= 768;
-            
-            // On mobile, show dots for individual videos
-            // On desktop, show dots for groups of 3 videos
-            const dotCount = isMobile ? videoCount : Math.ceil(videoCount / 3);
-            
-            for (let i = 0; i < dotCount; i++) {
-                const dot = document.createElement("button");
-                dot.className = "dot";
-                dot.onclick = () => goToSlide(i);
-                dotsContainer.appendChild(dot);
-            }
-            
-            updateDots();
-        }
+  function updateCategoryButtons(category) {
+    document.querySelectorAll('.categories button').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    document.querySelectorAll('.dropdown-option').forEach(opt => {
+      opt.classList.remove('active');
+    });
 
-        function updateDots() {
-            const dots = document.querySelectorAll(".dot");
-            const isMobile = window.innerWidth <= 768;
-            
-            dots.forEach((dot, index) => {
-                if (isMobile) {
-                    // On mobile, highlight the dot corresponding to the current video
-                    dot.classList.toggle("active", index === currentSlide);
-                } else {
-                    // On desktop, highlight the dot corresponding to the current group
-                    dot.classList.toggle("active", index === currentSlide);
-                }
-            });
-        }
+    document.querySelector(`.categories button[onclick*="${category}"]`)?.classList.add('active');
+    document.querySelector(`.dropdown-option[onclick*="${category}"]`)?.classList.add('active');
+  }
 
-        function goToSlide(slideIndex) {
-            const videoCount = videosByCategory[currentCategory].length;
-            const isMobile = window.innerWidth <= 768;
-            
-            if (isMobile) {
-                // On mobile, go directly to the video
-                const maxSlide = videoCount - 1;
-                currentSlide = Math.max(0, Math.min(slideIndex, maxSlide));
-            } else {
-                // On desktop, go to the group of videos
-                const maxSlide = Math.ceil(videoCount / 3) - 1;
-                currentSlide = Math.max(0, Math.min(slideIndex, maxSlide));
-            }
-            
-            updateSlide();
-        }
+  function toggleDropdown() {
+    document.getElementById('dropdown-menu').classList.toggle('show');
+    document.querySelector('.dropdown-button').classList.toggle('open');
+  }
 
-        function changeCategory(category) {
-            currentCategory = category;
-            currentSlide = 0;
-            
-            // Update desktop buttons
-            document.querySelectorAll(".categories button").forEach(btn => {
-                btn.classList.toggle("active", btn.textContent.toLowerCase().includes(category));
-            });
-            
-            renderVideos();
-        }
+  function selectCategory(category, label) {
+    document.getElementById('dropdown-text').innerText = label;
+    toggleDropdown();
+    changeCategory(category);
+  }
 
-        // Dropdown functionality
-        function toggleDropdown() {
-            const dropdown = document.getElementById('dropdown-menu');
-            const button = document.querySelector('.dropdown-button');
-            
-            dropdown.classList.toggle('show');
-            button.classList.toggle('open');
-        }
+  function renderVideos() {
+    const container = document.getElementById('videoContainer');
+    container.innerHTML = '';
+    videosData[currentCategory].forEach((video, index) => {
+      const div = document.createElement('div');
+      div.classList.add('video-thumb');
+      div.innerHTML = `<img src="${video.thumb}" onclick="openLightbox('${video.src}')" alt="Video Thumbnail">`;
+      container.appendChild(div);
+    });
+    updateSlidePosition();
+  }
 
-        function selectCategory(category, displayName) {
-            console.log('Selecting category:', category, displayName);
-            
-            document.getElementById('dropdown-text').textContent = displayName;
-            
-            // Update dropdown options
-            document.querySelectorAll('.dropdown-option').forEach(opt => {
-                opt.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Close dropdown
-            document.getElementById('dropdown-menu').classList.remove('show');
-            document.querySelector('.dropdown-button').classList.remove('open');
-            
-            // Change category
-            currentCategory = category;
-            currentSlide = 0;
-            
-            console.log('About to render videos for:', currentCategory);
-            renderVideos();
-        }
+  function updateSlidePosition() {
+    const container = document.getElementById('videoContainer');
+    const videoThumbs = container.querySelectorAll('.video-thumb');
+    const cardWidth = videoThumbs[0]?.offsetWidth || 320;
+    const visibleCards = window.innerWidth >= 1024 ? 3 : 1;
+    const maxSlide = Math.max(0, videoThumbs.length - visibleCards);
+    currentSlide = Math.min(currentSlide, maxSlide);
+    container.style.transform = `translateX(-${currentSlide * cardWidth}px)`;
+  }
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const dropdown = document.querySelector('.dropdown-container');
-            if (!dropdown.contains(event.target)) {
-                document.getElementById('dropdown-menu').classList.remove('show');
-                document.querySelector('.dropdown-button').classList.remove('open');
-            }
-        });
+  function prevSlide() {
+    if (currentSlide > 0) {
+      currentSlide--;
+      updateSlidePosition();
+      updatePaginationDots();
+    }
+  }
 
-        function updateSlide() {
-            const videoCount = videosByCategory[currentCategory].length;
-            const isMobile = window.innerWidth <= 768;
-            
-            console.log('UpdateSlide - Mobile:', isMobile, 'VideoCount:', videoCount, 'CurrentSlide:', currentSlide);
-            
-            if (isMobile) {
-                // On mobile, translate by the width of each video (80vw + 15px margin)
-                const videoWidth = window.innerWidth * 0.8 + 15; // 80vw + 15px margin
-                const maxSlide = videoCount - 1;
-                currentSlide = Math.max(0, Math.min(currentSlide, maxSlide));
-                const offsetPx = -(videoWidth * currentSlide);
-                console.log('Mobile offset:', offsetPx + 'px');
-                document.getElementById("videoContainer").style.transform = `translateX(${offsetPx}px)`;
-            } else {
-                // Desktop logic remains the same
-                const visibleCount = 3;
-                const maxSlide = Math.ceil(videoCount / visibleCount) - 1;
-                currentSlide = Math.max(0, Math.min(currentSlide, maxSlide));
-                const offsetPercent = -(100 * currentSlide);
-                document.getElementById("videoContainer").style.transform = `translateX(${offsetPercent}%)`;
-                
-                // Show/hide arrows on desktop
-                const arrows = document.querySelectorAll('.arrow');
-                if (arrows.length > 0) {
-                    arrows[0].style.visibility = currentSlide === 0 ? 'hidden' : 'visible';
-                    arrows[1].style.visibility = currentSlide >= maxSlide ? 'hidden' : 'visible';
-                }
-            }
-            
-            updateDots();
-        }
+  function nextSlide() {
+    const visibleCards = window.innerWidth >= 1024 ? 3 : 1;
+    const totalCards = videosData[currentCategory].length;
+    if (currentSlide < totalCards - visibleCards) {
+      currentSlide++;
+      updateSlidePosition();
+      updatePaginationDots();
+    }
+  }
 
-        function nextSlide() {
-            const videoCount = videosByCategory[currentCategory].length;
-            const visibleCount = window.innerWidth <= 768 ? 1 : 3;
-            const maxSlide = Math.ceil(videoCount / visibleCount) - 1;
-            if (currentSlide < maxSlide) {
-                currentSlide++;
-                updateSlide();
-            }
-        }
+  function updatePaginationDots() {
+    const dotsContainer = document.getElementById('paginationDots');
+    dotsContainer.innerHTML = '';
+    const visibleCards = window.innerWidth >= 1024 ? 3 : 1;
+    const totalDots = Math.max(1, videosData[currentCategory].length - visibleCards + 1);
 
-        function prevSlide() {
-            if (currentSlide > 0) {
-                currentSlide--;
-                updateSlide();
-            }
-        }
+    for (let i = 0; i < totalDots; i++) {
+      const dot = document.createElement('button');
+      dot.classList.add('dot');
+      if (i === currentSlide) dot.classList.add('active');
+      dot.onclick = () => {
+        currentSlide = i;
+        updateSlidePosition();
+        updatePaginationDots();
+      };
+      dotsContainer.appendChild(dot);
+    }
+  }
 
-        // Touch/Swipe functionality
-        function handleTouchStart(e) {
-            if (window.innerWidth > 768) return; // Only on mobile
-            
-            startX = e.touches[0].clientX;
-            currentX = startX;
-            isDragging = false; // Start as false, only set to true if we detect a swipe
-            
-            // Store initial time to detect quick taps vs swipes
-            this.touchStartTime = Date.now();
-        }
+  function openLightbox(src) {
+    const lightbox = document.getElementById('lightbox');
+    const video = document.getElementById('lightboxVideo');
+    video.src = src;
+    lightbox.style.display = 'flex';
+  }
 
-        function handleTouchMove(e) {
-            if (window.innerWidth > 768) return;
-            
-            currentX = e.touches[0].clientX;
-            const deltaX = Math.abs(currentX - startX);
-            const deltaY = Math.abs(e.touches[0].clientY - (e.touches[0].startY || e.touches[0].clientY));
-            
-            // Only start dragging if horizontal movement is greater than vertical (horizontal swipe)
-            // and movement is significant enough
-            if (deltaX > 15 && deltaX > deltaY) {
-                if (!isDragging) {
-                    isDragging = true;
-                    const container = document.getElementById("videoContainer");
-                    container.style.transition = 'none';
-                }
-                
-                e.preventDefault(); // Prevent scrolling only when we're actually swiping
-                
-                const container = document.getElementById("videoContainer");
-                const swipeDelta = currentX - startX;
-                
-                // Calculate current position in pixels for mobile
-                const videoWidth = window.innerWidth * 0.8 + 15;
-                const currentPosition = -(videoWidth * currentSlide);
-                const newPosition = currentPosition + swipeDelta;
-                
-                // Limit dragging beyond boundaries with some resistance
-                const videoCount = videosByCategory[currentCategory].length;
-                const maxPosition = -(videoWidth * (videoCount - 1));
-                
-                let limitedPosition;
-                if (newPosition > 0) {
-                    // Resistance when trying to go before first video
-                    limitedPosition = newPosition * 0.3;
-                } else if (newPosition < maxPosition) {
-                    // Resistance when trying to go past last video
-                    limitedPosition = maxPosition + (newPosition - maxPosition) * 0.3;
-                } else {
-                    limitedPosition = newPosition;
-                }
-                
-                container.style.transform = `translateX(${limitedPosition}px)`;
-            }
-        }
+  function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const video = document.getElementById('lightboxVideo');
+    video.pause();
+    video.src = '';
+    lightbox.style.display = 'none';
+  }
 
-        function handleTouchEnd(e) {
-            if (window.innerWidth > 768) return;
-            
-            const touchEndTime = Date.now();
-            const touchDuration = touchEndTime - (this.touchStartTime || touchEndTime);
-            
-            if (isDragging) {
-                isDragging = false;
-                const container = document.getElementById("videoContainer");
-                container.style.transition = 'transform 0.3s ease';
-                
-                const deltaX = currentX - startX;
-                const threshold = 50;
-                
-                const videoCount = videosByCategory[currentCategory].length;
-                const maxSlide = videoCount - 1;
-                
-                if (Math.abs(deltaX) > threshold) {
-                    if (deltaX > 0 && currentSlide > 0) {
-                        // Swiped right - go to previous
-                        currentSlide--;
-                    } else if (deltaX < 0 && currentSlide < maxSlide) {
-                        // Swiped left - go to next
-                        currentSlide++;
-                    }
-                }
-                
-                // Always return to proper position
-                updateSlide();
-            }
-            
-            // Reset touch tracking
-            startX = 0;
-            currentX = 0;
-        }
+  window.addEventListener('resize', () => {
+    updateSlidePosition();
+    updatePaginationDots();
+  });
 
-        // Add touch event listeners to the carousel container, not the videos
-        function addTouchListeners() {
-            const carousel = document.querySelector(".carousel");
-            
-            carousel.addEventListener('touchstart', handleTouchStart, { passive: true });
-            carousel.addEventListener('touchmove', handleTouchMove, { passive: false });
-            carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
-        }
+  document.addEventListener('DOMContentLoaded', () => {
+    renderVideos();
+    updatePaginationDots();
+  });
 
-        function openLightbox(src) {
-            const lightbox = document.getElementById("lightbox");
-            const video = document.getElementById("lightboxVideo");
-            video.src = src;
-            lightbox.style.display = "flex";
-        }
 
-        function closeLightbox() {
-            const lightbox = document.getElementById("lightbox");
-            const video = document.getElementById("lightboxVideo");
-            video.pause();
-            video.src = "";
-            lightbox.style.display = "none";
-        }
-
-        // Handle window resize to update dots
-        function handleResize() {
-            renderPaginationDots();
-            updateSlide();
-        }
-
-        // Initialize on load and resize
-        window.addEventListener("resize", handleResize);
-        window.addEventListener("load", function() {
-            renderVideos();
-            addTouchListeners();
-        });
 
 
 
