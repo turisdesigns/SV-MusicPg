@@ -1,4 +1,4 @@
-const videosByCategory = {
+ const videosByCategory = {
             full: [
                 { thumbnail: "./img/burko-full-set-thumbnail.png", src: "https://stream.mux.com/B2sjPWvKK1WGAHAQTYMgyowVwo3kCLLy.m3u8" },
                 { thumbnail: "./img/marbs-full-set-thumbnail.png", src: "https://stream.mux.com/aELVKP66fm00yjwzaXiF9meg5fR3IxLkT.m3u8" },
@@ -38,7 +38,15 @@ const videosByCategory = {
             videosByCategory[currentCategory].forEach((video, index) => {
                 const div = document.createElement("div");
                 div.className = "video-thumb";
-                div.innerHTML = `<img src="${video.thumbnail}" alt="Video ${index + 1}" onclick="openLightbox('${video.src}')" onerror="this.style.backgroundColor='#333'; this.alt='Image not found'">`;
+                // Create a placeholder thumbnail if image doesn't load
+                div.innerHTML = `
+                    <div style="position: relative; width: 100%; padding-bottom: 56.25%; background: #333; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;" onclick="openLightbox('${video.src}')">
+                        <img src="${video.thumbnail}" alt="Video ${index + 1}" 
+                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 10px;"
+                             onerror="this.style.display='none'; this.parentNode.innerHTML += '<div style=\\'color: white; text-align: center; font-size: 18px;\\'>▶ Video ${index + 1}</div>'">
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; pointer-events: none;">▶</div>
+                    </div>
+                `;
                 container.appendChild(div);
                 console.log('Added video:', index + 1, video.thumbnail);
             });
@@ -72,14 +80,17 @@ const videosByCategory = {
         function updateDots() {
             const dots = document.querySelectorAll(".dot");
             const isMobile = window.innerWidth <= 768;
+            const videoCount = videosByCategory[currentCategory].length;
             
             dots.forEach((dot, index) => {
                 if (isMobile) {
                     // On mobile, highlight the dot corresponding to the current video
                     dot.classList.toggle("active", index === currentSlide);
                 } else {
-                    // FIXED: On desktop, also highlight individual video dots
-                    dot.classList.toggle("active", index === Math.floor(currentSlide));
+                    // On desktop, highlight dots based on which videos are currently visible
+                    // If we're showing videos starting from currentSlide, highlight the first 3 dots from that position
+                    const isVisible = index >= currentSlide && index < currentSlide + 3 && index < videoCount;
+                    dot.classList.toggle("active", isVisible);
                 }
             });
         }
@@ -159,11 +170,14 @@ const videosByCategory = {
                 console.log('Mobile offset:', offsetPx + 'px');
                 document.getElementById("videoContainer").style.transform = `translateX(${offsetPx}px)`;
             } else {
-                // FIXED: Desktop logic - move one video at a time, not by groups of 3
-                const videoWidth = 100 / 3; // Each video is 33.33% wide
-                const maxSlide = Math.max(0, videoCount - 3); // Show 3 videos, so max slide is total - 3
+                // Desktop logic - move one video at a time
+                // Each video takes 33.33% of container width, so moving by 33.33% shows the next video
+                const videoWidthPercent = 33.333333; // Each video is 1/3 of the container
+                const maxSlide = Math.max(0, videoCount - 3); // Can't scroll past the point where we show last 3 videos
                 currentSlide = Math.max(0, Math.min(currentSlide, maxSlide));
-                const offsetPercent = -(videoWidth * currentSlide);
+                const offsetPercent = -(videoWidthPercent * currentSlide);
+                
+                console.log('Desktop - VideoCount:', videoCount, 'CurrentSlide:', currentSlide, 'MaxSlide:', maxSlide, 'Offset:', offsetPercent + '%');
                 document.getElementById("videoContainer").style.transform = `translateX(${offsetPercent}%)`;
                 
                 // Show/hide arrows on desktop
@@ -306,8 +320,9 @@ const videosByCategory = {
             carousel.addEventListener('touchend', handleTouchEnd, { passive: true });
         }
 
-        // FIXED: Enhanced openLightbox function with HLS support
+        // FIXED: Enhanced openLightbox function with better HLS support and error handling
         function openLightbox(src) {
+            console.log('Opening lightbox with source:', src);
             const lightbox = document.getElementById("lightbox");
             const video = document.getElementById("lightboxVideo");
             
@@ -317,28 +332,36 @@ const videosByCategory = {
                 hlsInstance = null;
             }
             
-            // Check if HLS is supported
-            if (Hls.isSupported() && src.includes('.m3u8')) {
+            // Show lightbox immediately
+            lightbox.style.display = "flex";
+            
+            // Check if HLS is supported and if the source is an HLS stream
+            if (typeof Hls !== 'undefined' && Hls.isSupported() && src.includes('.m3u8')) {
+                console.log('Using HLS.js for video playback');
                 hlsInstance = new Hls({
                     enableWorker: false,
                     lowLatencyMode: true,
-                    backBufferLength: 90
+                    backBufferLength: 90,
+                    maxBufferLength: 30,
+                    maxMaxBufferLength: 600,
+                    startLevel: -1,
+                    capLevelToPlayerSize: true
                 });
                 
                 hlsInstance.loadSource(src);
                 hlsInstance.attachMedia(video);
                 
                 hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
-                    console.log('HLS manifest loaded, starting playback');
+                    console.log('HLS manifest loaded successfully');
+                    video.play().catch(e => console.log('Autoplay prevented:', e));
                 });
                 
                 hlsInstance.on(Hls.Events.ERROR, function(event, data) {
                     console.error('HLS error:', data);
                     if (data.fatal) {
-                        // Try to recover from fatal errors
                         switch(data.type) {
                             case Hls.ErrorTypes.NETWORK_ERROR:
-                                console.log('Network error, trying to recover...');
+                                console.log('Network error, trying to reload...');
                                 hlsInstance.startLoad();
                                 break;
                             case Hls.ErrorTypes.MEDIA_ERROR:
@@ -346,22 +369,38 @@ const videosByCategory = {
                                 hlsInstance.recoverMediaError();
                                 break;
                             default:
-                                console.log('Fatal error, destroying HLS instance');
-                                hlsInstance.destroy();
-                                hlsInstance = null;
+                                console.log('Fatal error, cannot recover');
+                                // Fallback to direct video source
+                                video.src = src;
+                                video.load();
                                 break;
                         }
                     }
                 });
+                
+                hlsInstance.on(Hls.Events.LEVEL_LOADED, function(event, data) {
+                    console.log('HLS level loaded:', data.level);
+                });
+                
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 // Native HLS support (Safari)
+                console.log('Using native HLS support');
                 video.src = src;
+                video.load();
+                video.play().catch(e => console.log('Autoplay prevented:', e));
             } else {
-                // Fallback for non-HLS videos
+                // Fallback for other video formats or if HLS.js is not available
+                console.log('Using direct video source');
                 video.src = src;
+                video.load();
+                video.play().catch(e => console.log('Autoplay prevented:', e));
             }
             
-            lightbox.style.display = "flex";
+            // Add error handling for video element
+            video.onerror = function() {
+                console.error('Video failed to load:', src);
+                alert('Video failed to load. Please check your internet connection and try again.');
+            };
         }
 
         // FIXED: Enhanced closeLightbox function
@@ -435,7 +474,6 @@ const videosByCategory = {
             renderVideos();
             addTouchListeners();
         });
-
 
 
 
