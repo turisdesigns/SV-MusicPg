@@ -1660,6 +1660,19 @@ background: #0B0B1F;
   color: white;
 }
 
+.cta-subheading {
+  text-align: center;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.cta-button {
+  
+  font-size: 2rem;
+  font-weight: semi-bold;
+  border: none;
+}
+
 .underline-middle {
   width: 100px;
   height: 3px;
@@ -1870,7 +1883,10 @@ background: #0B0B1F;
   }
  .reels-subheading {
   font-size: 2rem;
-}
+  }
+  .cta-subheading {
+  font-size: 2rem;
+  }
   .dropdown-container {
       display: block;
   }
