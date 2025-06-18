@@ -223,6 +223,53 @@
           </div>
         </div>
       </div>
+
+
+      <section class="categories-section" id="reels">
+        <h2>SEE IT IN ACTION</h2>
+        <div class="underline-middle"></div>
+        <h3 class="reels-subheading">
+             Live media produced by Shred Video at our partner venues.
+        </h3>
+        <!-- Desktop Categories -->
+        <div class="categories">
+            <button class="active" onclick="changeCategory('full')">Full Set Videos</button>
+            <button onclick="changeCategory('highlights')">Highlights</button>
+            <button onclick="changeCategory('reels')">Social Media Reels</button>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div class="dropdown-container">
+            <button class="dropdown-button" onclick="toggleDropdown()">
+                <span id="dropdown-text">Full Set Videos</span>
+            </button>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <button class="dropdown-option active" onclick="selectCategory('full', 'Full Set Videos')">Full Set Videos</button>
+                <button class="dropdown-option" onclick="selectCategory('highlights', 'Highlights')">Highlights</button>
+                <button class="dropdown-option" onclick="selectCategory('reels', 'Social Media Reels')">Social Media Reels</button>
+            </div>
+        </div>
+
+        <div class="carousel">
+            <div class="arrow" onclick="prevSlide()">&#10094;</div>
+            <div class="videos" id="videoContainer"></div>
+            <div class="arrow" onclick="nextSlide()">&#10095;</div>
+        </div>
+
+        <!-- Pagination Dots -->
+        <div class="pagination-dots" id="paginationDots"></div>
+    </section>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <video id="lightboxVideo" controls autoplay></video>
+    </div>
+    <div class="cta-demo-reel">
+	    <h3 class="cta-subheading">
+		Check out more from our demo reel
+	    </h3>
+	    <button class="cta-button">Demo Reel</button>
+    </div>
+	
     
       <div class="stats-section">
         <div class="stats-container">
@@ -273,50 +320,7 @@
       </section>
   
 
-      <section class="categories-section" id="reels">
-        <h2>SEE IT IN ACTION</h2>
-        <div class="underline-middle"></div>
-        <h3 class="reels-subheading">
-             Live media produced by Shred Video at our partner venues.
-        </h3>
-        <!-- Desktop Categories -->
-        <div class="categories">
-            <button class="active" onclick="changeCategory('full')">Full Set Videos</button>
-            <button onclick="changeCategory('highlights')">Highlights</button>
-            <button onclick="changeCategory('reels')">Social Media Reels</button>
-        </div>
 
-        <!-- Mobile Dropdown -->
-        <div class="dropdown-container">
-            <button class="dropdown-button" onclick="toggleDropdown()">
-                <span id="dropdown-text">Full Set Videos</span>
-            </button>
-            <div class="dropdown-menu" id="dropdown-menu">
-                <button class="dropdown-option active" onclick="selectCategory('full', 'Full Set Videos')">Full Set Videos</button>
-                <button class="dropdown-option" onclick="selectCategory('highlights', 'Highlights')">Highlights</button>
-                <button class="dropdown-option" onclick="selectCategory('reels', 'Social Media Reels')">Social Media Reels</button>
-            </div>
-        </div>
-
-        <div class="carousel">
-            <div class="arrow" onclick="prevSlide()">&#10094;</div>
-            <div class="videos" id="videoContainer"></div>
-            <div class="arrow" onclick="nextSlide()">&#10095;</div>
-        </div>
-
-        <!-- Pagination Dots -->
-        <div class="pagination-dots" id="paginationDots"></div>
-    </section>
-
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <video id="lightboxVideo" controls autoplay></video>
-    </div>
-    <div class="cta-demo-reel">
-	    <h3 class="cta-subheading">
-		Check out more from our demo reel
-	    </h3>
-	    <button class="cta-button">Demo Reel</button>
-    </div>
 
 
 
