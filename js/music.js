@@ -519,3 +519,13 @@ hamburger.addEventListener('click', () => {
 hamburger.classList.toggle('active');
 navLinks.classList.toggle('open');
 });
+
+
+//Hero video
+document.addEventListener('DOMContentLoaded', function () {
+    const video = document.querySelector('.music-hero video');
+    video.muted = true;
+    video.play().catch(function(error) {
+        console.warn("Autoplay failed, attempting manual play...", error);
+    });
+});
