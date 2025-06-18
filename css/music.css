@@ -1407,10 +1407,19 @@ background: #0B0B1F;
   color: white;
 }
 
+.service-subheading {
+  text-align: center;
+  margin-bottom: 20px;
+  color: white;
+}
+
 @media (max-width: 768px) {
   .service-section-title {
     font-size: 3rem;
   }
+  .service-subheading {
+     font-size: 2rem;
+ }
  
 }
 
@@ -1645,6 +1654,12 @@ background: #0B0B1F;
   color: white;
 }
 
+.reels-subheading {
+  text-align: center;
+  margin-bottom: 20px;
+  color: white;
+}
+
 .underline-middle {
   width: 100px;
   height: 3px;
@@ -1853,7 +1868,9 @@ background: #0B0B1F;
   .categories {
       display: none;
   }
-
+ .reels-subheading {
+  font-size: 2rem;
+}
   .dropdown-container {
       display: block;
   }
