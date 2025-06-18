@@ -1667,6 +1667,7 @@ background: #0B0B1F;
 }
 
 .cta-button {
+  background: linear-gradient(90deg, #c850c0, #ff5f6d);
   font-size: 2rem;
   font-weight: semi-bold;
   border: none;
