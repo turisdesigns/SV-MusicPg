@@ -522,10 +522,17 @@ navLinks.classList.toggle('open');
 
 
 //Hero video
-document.addEventListener('DOMContentLoaded', function () {
-    const video = document.querySelector('.music-hero video');
+  window.addEventListener("load", function () {
+    const video = document.querySelector(".music-hero video");
+
+    // Make absolutely sure it's muted and plays inline
     video.muted = true;
-    video.play().catch(function(error) {
-        console.warn("Autoplay failed, attempting manual play...", error);
+    video.setAttribute("playsinline", "");
+    video.setAttribute("autoplay", "");
+    video.setAttribute("loop", "");
+
+    // Try to play the video
+    video.play().catch((error) => {
+      console.warn("Video autoplay failed:", error);
     });
-});
+  });
