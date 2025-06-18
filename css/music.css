@@ -1766,8 +1766,6 @@ background: #0B0B1F;
 
 
 
-
-
 /*Video Reels Section*/
 .categories-section {
   padding: 60px 20px;
@@ -1788,6 +1786,26 @@ background: #0B0B1F;
 }
 
 
+.cta-subheading {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: white;}
+
+.cta-button {
+  background: linear-gradient(90deg, #c850c0, #ff5f6d);
+  font-size: 2rem;
+  font-weight: semi-bold;
+  border: none;
+  display: inline-block;
+  justify-content: center;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+
+.cta-button:hover {
+  background-color: #b01e2e;
+}
 
 .underline-middle {
   width: 100px;
