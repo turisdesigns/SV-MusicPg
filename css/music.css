@@ -1674,6 +1674,8 @@ background: #0B0B1F;
   justify-content: center;
   left: 50%;
   transform: translate(-50%, -50%);
+  margin-top: 10vh;
+  margin-bottom: 10vh;
 }
 
 .underline-middle {
