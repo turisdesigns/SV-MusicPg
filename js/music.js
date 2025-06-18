@@ -1,3 +1,5 @@
+//Video player with lightbox
+/*
 const videosByCategory = {
   full: [
       { thumbnail: "./img/burko-full-set-thumbnail.png", src: "https://stream.mux.com/B2sjPWvKK1WGAHAQTYMgyowVwo3kCLLy.m3u8" },
@@ -462,7 +464,7 @@ window.addEventListener("load", function() {
     renderVideos();
     addTouchListeners();
 });
-
+*/
 
 
 
